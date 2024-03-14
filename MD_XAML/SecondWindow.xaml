@@ -1,0 +1,298 @@
+﻿<Window x:Class="MD_XAML.SecondWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MD_XAML"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        mc:Ignorable="d"
+        Title="Second Window" MinHeight="500" MinWidth="932" Background="#f1f1f1" WindowState="Maximized" WindowStartupLocation="CenterScreen" FontFamily="Apos" StateChanged="Window_StateChanged" Closing="Window_Closing" Loaded="Window_Loaded">
+    <Window.Resources>
+        <Style x:Key="iOSToggleStyle" TargetType="ToggleButton">
+            <Setter Property="Background" Value="#E5E5E5"/>
+            <Setter Property="Foreground" Value="#FFFFFF"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#E5E5E5"/>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Grid>
+                            <Border x:Name="ToggleBorder" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="15">
+                                <Border.Effect>
+                                    <DropShadowEffect Color="Transparent" BlurRadius="4" Direction="315" ShadowDepth="2"/>
+                                </Border.Effect>
+                            </Border>
+                            <Border x:Name="BackgroundOverlay" Background="#80000000" CornerRadius="15" Opacity="0" Visibility="Collapsed"/>
+                            <Ellipse x:Name="Knob" Fill="{TemplateBinding Foreground}" Width="26" Height="26" HorizontalAlignment="Left" Margin="3,0,3,0">
+                                <Ellipse.RenderTransform>
+                                    <TranslateTransform X="0"/>
+                                </Ellipse.RenderTransform>
+                            </Ellipse>
+                            <TextBlock x:Name="OnText" Text="|" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="{TemplateBinding Foreground}"/>
+                            <TextBlock x:Name="OffText" Text="O" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,10,0" Foreground="{TemplateBinding Foreground}"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter Property="Background" Value="#9e9e9e"/>
+                                <Setter TargetName="Knob" Property="RenderTransform">
+                                    <Setter.Value>
+                                        <TranslateTransform X="28"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="MenuItemStyle" TargetType="{x:Type MenuItem}">
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Margin" Value="0" />
+            <Setter Property="Background" Value="#2a579a" />
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type MenuItem}">
+                        <Border Background="{Binding Path=Background, RelativeSource={RelativeSource AncestorType={x:Type MenuItem}}}">
+                            <Grid>
+                                <ContentPresenter Content="{TemplateBinding Header}" Margin="6,3,6,3" />
+                                <Popup x:Name="PART_Popup" AllowsTransparency="True" Focusable="False" IsOpen="{TemplateBinding IsSubmenuOpen}" Placement="Bottom">
+                                    <Border Background="#f8f8f8" BorderBrush="#a8a8a8" BorderThickness="1">
+                                        <ScrollViewer CanContentScroll="True" VerticalScrollBarVisibility="Disabled">
+                                            <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Cycle" />
+                                        </ScrollViewer>
+                                    </Border>
+                                </Popup>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="MenuItem.IsSubmenuOpen" Value="True">
+                    <Setter Property="Background" Value="#f8f8f8" />
+                    <Setter Property="Foreground" Value="Black" />
+                    <Setter Property="HorizontalAlignment" Value="Left"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="#bee6fd" />
+                    <Setter Property="Foreground" Value="Black" />
+                    <Setter Property="Padding" Value="15,5,0,5" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="SubMenuItemStyle" TargetType="{x:Type MenuItem}">
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Margin" Value="0" />
+            <Setter Property="Background" Value="#f8f8f8" />
+            <Setter Property="Foreground" Value="Black"/>
+            <Style.Triggers>
+                <Trigger Property="MenuItem.IsSubmenuOpen" Value="True">
+                    <Setter Property="Background" Value="#f8f8f8" />
+                    <Setter Property="Foreground" Value="Black" />
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#3e6db6" />
+                    <Setter Property="Foreground" Value="Black" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="ChecklistItemStyle" TargetType="CheckBox">
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Padding" Value="3"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+        <Style x:Key="ChecklistTextStyleTextBox" TargetType="TextBox">
+            <Setter Property="FontFamily" Value="Aptos"/>
+            <Setter Property="FontSize" Value="14px"/>
+            <Setter Property="FontWeight" Value="Normal"/>
+            <Setter Property="Foreground" Value="DarkBlue"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="#f1f1f1"/>
+            <Setter Property="TextWrapping" Value="WrapWithOverflow"/>
+        </Style>
+        <Style x:Key="ChecklistTextStyle" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Aptos"/>
+            <Setter Property="FontSize" Value="14px"/>
+            <Setter Property="FontWeight" Value="Normal"/>
+            <Setter Property="Foreground" Value="DarkBlue"/>
+            <Setter Property="Background" Value="#f1f1f1"/>
+            <Setter Property="TextWrapping" Value="WrapWithOverflow"/>
+        </Style>
+
+        <Style x:Key="ChecklistItemLabelStyle" TargetType="Label">
+            <Setter Property="FontFamily" Value="Aptos"/>
+            <Setter Property="FontSize" Value="14px"/>
+            <Setter Property="FontWeight" Value="Normal"/>
+            <Setter Property="Foreground" Value="DarkBlue"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="#f1f1f1"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <Style x:Key="StatusTextStyle" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Aptos"/>
+            <Setter Property="FontSize" Value="10px"/>
+            <Setter Property="FontWeight" Value="Normal"/>
+            <Setter Property="Foreground" Value="Green"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="5,0,5,0"/>
+        </Style>
+    </Window.Resources>
+    <DockPanel x:Name="dockPanel" LastChildFill="True" Focusable="True">
+        <Menu x:Name="menuBar" DockPanel.Dock="Top" HorizontalAlignment="Stretch" Background="#2a579a" Height="25">
+            <MenuItem Header="File" Style="{StaticResource MenuItemStyle}" Height="25" VerticalAlignment="Center" Margin="20,0,5,0">
+                <MenuItem Header="_Main Menu" >
+                </MenuItem>
+                <MenuItem Header="_Reset Form" >
+                </MenuItem>
+                <Separator Style="{StaticResource {x:Static MenuItem.SeparatorStyleKey}}">
+                    <Separator.Template>
+                        <ControlTemplate TargetType="{x:Type Separator}">
+                            <Border Background="#c5c5c5" Height="1" Margin="0,4,0,4" />
+                        </ControlTemplate>
+                    </Separator.Template>
+                </Separator>
+                <MenuItem Header="_Quit" Style="{StaticResource SubMenuItemStyle}">
+                </MenuItem>
+            </MenuItem>
+            <MenuItem Header="Help" IsTabStop="False" Style="{StaticResource MenuItemStyle}">
+                <MenuItem Header="_About" Style="{StaticResource SubMenuItemStyle}">
+                </MenuItem>
+            </MenuItem>
+        </Menu>
+        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="30">
+                <Grid VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="30,30,30,30">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="2*" MinWidth="475"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="10"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="10"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBox Grid.Column="0" Grid.Row="0" Text="Ticket Hyperlink: " Style="{StaticResource ChecklistTextStyleTextBox}" VerticalAlignment="Center" Margin="0,0,10,0" VerticalContentAlignment="Center" HorizontalAlignment="Right"/>
+                    <Border Grid.Column="1" Grid.Row="0" BorderBrush="Gray" BorderThickness="1" CornerRadius="2" Padding="2" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Stretch">
+                        <DockPanel Background="White" HorizontalAlignment="Stretch">
+                            <TextBox x:Name="txtTicketLink" BorderThickness="0" Background="Transparent" VerticalContentAlignment="Center" Margin="10,3,10,3"/>
+                        </DockPanel>
+                    </Border>
+                    <TextBlock Grid.Column="2" Grid.Row="0" x:Name="ErrorMessageTextBlockTL" Text="ManageEngine Ticket's hyperlink is required!" Visibility="Collapsed" Foreground="Red" VerticalAlignment="Center" Margin="10,0,10,0" HorizontalAlignment="Left" />
+
+                    <TextBox Grid.Column="0" Grid.Row="2" Text="Current File Name: " Style="{StaticResource ChecklistTextStyleTextBox}" VerticalAlignment="Center" Margin="0,0,10,0" VerticalContentAlignment="Center" HorizontalAlignment="Right" ToolTip="Example: AES - FirstName LastName - Hou - Checklist"/>
+                    <Border Grid.Column="1" Grid.Row="2" BorderBrush="Gray" BorderThickness="1" CornerRadius="2" Padding="2" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Stretch">
+                        <DockPanel Background="White" HorizontalAlignment="Stretch">
+                            <TextBox x:Name="txtFileName" BorderThickness="0" Background="Transparent" VerticalContentAlignment="Center" Margin="10,3,10,3" ToolTip="Example: AES - FirstName LastName - Hou - Checklist" />
+                        </DockPanel>
+                    </Border>
+                    <TextBlock Grid.Row="2" Grid.Column="3" x:Name="ErrorMessageTextBlockFN" Text="File name is required!" Visibility="Collapsed" Foreground="Red" VerticalAlignment="Center" Margin="10,0,10,0" HorizontalAlignment="Left" />
+
+                    <TextBlock Grid.Column="1" Grid.Row="3" x:Name="NonStandardTextBlock" Visibility="Collapsed" Foreground="#FD6A02" Margin="10,3,10,3" HorizontalAlignment="Left" />
+
+                    <Grid Grid.Column="1" Grid.Row="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition Width="1"/>
+                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition Width="1"/>
+                            <ColumnDefinition Width="3*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,10,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width=".25*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <ToggleButton Grid.Column="0" x:Name="tbFileName" Style="{StaticResource iOSToggleStyle}" IsChecked="False" HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" Height="30" />
+                            <Label Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="DarkBlue" FontFamily="Apos" FontSize="14" Content="Allow File Name Editing" />
+                        </Grid>
+
+                        <Border Grid.Column="1" Background="LightGray" VerticalAlignment="Stretch" Margin="0,3,0,3"/>
+                        <Grid Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width=".25*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <ToggleButton Grid.Column="0" x:Name="tbGetLaptop" Style="{StaticResource iOSToggleStyle}" IsChecked="True" HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" Height="30" />
+                            <Label Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="DarkBlue" FontFamily="Apos" FontSize="14" Content="Issue Laptop" />
+                        </Grid>
+
+                        <Border Grid.Column="3" Background="LightGray" VerticalAlignment="Stretch" Margin="0,3,0,3"/>
+                        <Grid Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width=".25*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <ToggleButton Grid.Column="0" x:Name="tbReHire" Style="{StaticResource iOSToggleStyle}" IsChecked="False" HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" Height="30"/>
+                            <Label Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="DarkBlue" FontFamily="Apos" FontSize="14" Content="Re-Hire" />
+                        </Grid>
+                    </Grid>
+                </Grid>
+                <GroupBox x:Name="gbStep1" Header="1: Once the new hire ticket is submitted by HR" Margin="5" FontSize="15" FontWeight="Bold">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" x:Name="gbStep1Col1"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition MinHeight="30"/>
+                            <RowDefinition MinHeight="30"/>
+                            <RowDefinition MinHeight="30"/>
+                            <RowDefinition MinHeight="30"/>
+                            <RowDefinition MinHeight="30"/>
+                            <RowDefinition MinHeight="30"/>
+                            <RowDefinition MinHeight="30"/>
+                            <RowDefinition MinHeight="30"/>
+                            <RowDefinition MinHeight="30"/>
+                            <RowDefinition MinHeight="30"/>
+                            <RowDefinition MinHeight="30"/>
+                            <RowDefinition MinHeight="30"/>
+                            <RowDefinition MinHeight="30"/>
+                        </Grid.RowDefinitions>
+
+                        <CheckBox x:Name="CheckBoxA0" Grid.Row="0" Grid.Column="0" Style="{StaticResource ChecklistItemStyle}">
+                            <TextBlock Text="Enable the account in AD and move it to the correct Organizational Unit (OU).">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock" BasedOn="{StaticResource ChecklistTextStyle}">
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </CheckBox>
+                        <TextBlock x:Name="StampA0" Grid.Row="0" Grid.Column="1" Style="{StaticResource StatusTextStyle}"/>
+
+                        <CheckBox x:Name="CheckBoxA1" Grid.Row="1" Grid.Column="0" Style="{StaticResource ChecklistItemStyle}">
+                            <TextBlock Text="Remove the user from the 'Term_User' security group." >
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock" BasedOn="{StaticResource ChecklistTextStyle}">
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </CheckBox>
+                        <TextBlock x:Name="StampA1" Grid.Row="1" Grid.Column="1" Style="{StaticResource StatusTextStyle}"/>
+                    </Grid>
+                </GroupBox>
+                <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,50">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="200"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="50"/>
+                    </Grid.RowDefinitions>
+                    <ProgressBar x:Name="progressBar" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Visibility="Collapsed" HorizontalAlignment="Center" VerticalAlignment="Center" Width="500" Height="25" />
+                    <Button Grid.Column="0" Grid.Row="1" Margin="15,5,15,5" x:Name="saveBtn" Content="Save Progress"  Height="30" Width="150" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" Background="#3e6db6" FontFamily="Apos" FontSize="12" Style="{DynamicResource MaterialDesignRaisedDarkButton}"/>
+                </Grid>
+            </StackPanel>
+        </ScrollViewer>
+    </DockPanel>
+</Window>
